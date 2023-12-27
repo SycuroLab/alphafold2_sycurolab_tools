@@ -16,20 +16,55 @@
 source ~/.bashrc
 
 # Activate the alphafold2 conda environment.
-conda activate alphafold2_env
+conda activate alphafold2_test_env
+#conda activate alphafold2_env
 
-ALPHAFOLD_PARAMS_PATH="/bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs/databases/params"
-ALPHAFOLD_DATA_PATH="/bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs/databases"
-ALPHAFOLD_SOFTWARE_PATH="/bulk/IMCshared_bulk/shared/shared_software/alphafold"
-
+# The protein fasta file that contains the protein sequence for one protein to predict using alphafold.
 FASTA_INFILE="/bulk/IMCshared_bulk/shared/shared_software/alphafold/example_protein.fasta"
 
+# The output directory to write the alphafold2 output files.
 OUTPUT_DIR="/bulk/IMCshared_bulk/shared/shared_software/alphafold/testing"
 
+# The database preset for the --db_preset parameter option.
+# <full_dbs|reduced_dbs>
+# Choose preset MSA database configuration.
+DATABASE_PRESET="full_dbs"
+
+# The model preset for the --model_preset parameter option.
+# <monomer|monomer_casp14|monomer_ptm|multimer>
+# Choose preset model configuration - the monomer model, the monomer model with 
+# extra ensembling, monomer model with pTM head, or multimer model
+# (default: 'monomer')
+MODEL_PRESET="monomer"
+#MODEL_PRESET="multimer"
+
+# The alphafold2 parameter path.
+PARAMS_PATH="/bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs/databases/params"
+
+# The alphafold2 database path.
+DATA_PATH="/bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs/databases"
+
+# The alphafold2 software path.
+SOFTWARE_PATH="/bulk/IMCshared_bulk/shared/shared_software/alphafold"
+
+
+# Make the output directory if it does not already exist.
 mkdir -p ${OUTPUT_DIR}
 
-echo "python ${ALPHAFOLD_SOFTWARE_PATH}/run_alphafold.py --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${ALPHAFOLD_DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${ALPHAFOLD_DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${ALPHAFOLD_DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${ALPHAFOLD_DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${ALPHAFOLD_DATA_PATH}/pdb70/pdb70 --mgnify_database_path ${ALPHAFOLD_DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${ALPHAFOLD_DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${ALPHAFOLD_DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax"
+# If multimer model preset then you can not use the --pdb70_database_path.
+#if [[ "${MODEL_PRESET}" == "multimer" ]]
+#then
 
-python ${ALPHAFOLD_SOFTWARE_PATH}/run_alphafold.py --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${ALPHAFOLD_DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${ALPHAFOLD_DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${ALPHAFOLD_DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${ALPHAFOLD_DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${ALPHAFOLD_DATA_PATH}/pdb70/pdb70 --mgnify_database_path ${ALPHAFOLD_DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${ALPHAFOLD_DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${ALPHAFOLD_DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax
+#echo "python ${SOFTWARE_PATH}/run_alphafold.py --db_preset ${DATABASE_PRESET} --model_preset ${MODEL_PRESET} --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${DATA_PATH}/pdb70/pdb70 --pdb_seqres_database_path ${DATA_PATH}/pdb_seqres/pdb_seqres.txt --mgnify_database_path ${DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax"
 
+#python ${SOFTWARE_PATH}/run_alphafold.py --db_preset ${DATABASE_PRESET} --model_preset ${MODEL_PRESET} --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${DATA_PATH}/pdb70/pdb70 --pdb_seqres_database_path ${DATA_PATH}/pdb_seqres/pdb_seqres.txt --mgnify_database_path ${DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax
+
+
+#else
+
+echo "python ${SOFTWARE_PATH}/run_alphafold.py --db_preset ${DATABASE_PRESET} --model_preset ${MODEL_PRESET} --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${DATA_PATH}/pdb70/pdb70 --mgnify_database_path ${DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax"
+
+python ${SOFTWARE_PATH}/run_alphafold.py --db_preset ${DATABASE_PRESET} --model_preset ${MODEL_PRESET} --fasta_paths ${FASTA_INFILE} --max_template_date 2023-08-04 --data_dir ${DATA_PATH} --output_dir ${OUTPUT_DIR} --bfd_database_path ${DATA_PATH}/bfd/bfd_metaclust_clu_complete_id30_c90_final_seq.sorted_opt --uniref90_database_path ${DATA_PATH}/uniref90/uniref90.fasta --uniref30_database_path ${DATA_PATH}/uniref30/UniRef30_2021_03 --pdb70_database_path ${DATA_PATH}/pdb70/pdb70 --mgnify_database_path ${DATA_PATH}/mgnify/mgy_clusters_2022_05.fa --template_mmcif_dir ${DATA_PATH}/pdb_mmcif/mmcif_files --obsolete_pdbs_path ${DATA_PATH}/pdb_mmcif/obsolete.dat --use_gpu_relax
+
+#fi
 
