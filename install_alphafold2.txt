@@ -1,0 +1,41 @@
+
+# Install the conda environment using python and pip to install python modules. 
+
+conda create --name alphafold2_env
+conda activate alphafold2_env
+conda install -c conda-forge python==3.10
+pip install --upgrade pip
+pip install absl-py
+pip install biopython==1.79
+pip install chex
+pip install dm-haiku
+pip install dm-tree
+pip install docker
+pip install immutabledict
+pip install jax
+pip install --upgrade "jax[cuda11_pip]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+pip install ml-collections
+pip install numpy
+pip install pandas
+pip install scipy
+pip install tensorflow-cpu
+pip install typing-extensions
+
+conda install -c bioconda hmmer
+conda install -c conda-forge -c bioconda hhsuite
+conda install -c bioconda kalign3
+conda install -c conda-forge pdbfixer
+
+conda env export > alphafold2_env.yaml
+
+## Run download_alphafold2_database.sh to download and install the alphafold2 databases.
+sbatch download_alphafold2_database.sh
+
+## Make sure that the permissions to the database are on read and execute. As well as make sure the group is imcshared.
+chown -R kevin.muirhead:imcshared /bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs; 
+chmod -R a+rx /bulk/IMCshared_bulk/shared/dbs/alphafold2_dbs
+
+
+### To check to see if it is finished.
+screen -x 1293919
+
